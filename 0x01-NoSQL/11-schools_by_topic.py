@@ -1,10 +1,16 @@
 #!/usr/bin/env python3
-""" MongoDB Operations with Python using pymongo """
+'''Task 11's module.
+'''
 
 
-def update_topics(mongo_collection, name, topics):
-    """ Changes all topics of a school document based on the name """
-    query = {"name": name}
-    new_values = {"$set": {"topics": topics}}
-
-    mongo_collection.update_many(query, new_values)
+def schools_by_topic(mongo_collection, topic):
+    '''Returns the list of school having a specific topic.
+    '''
+    topic_filter = {
+        'topics': {
+            '$elemMatch': {
+                '$eq': topic,
+            },
+        },
+    }
+    return [doc for doc in mongo_collection.find(topic_filter)]
